@@ -1,0 +1,12 @@
+.avatar-current {
+    width:100px;
+    height:100px;
+
+    border: 2px solid gray;
+    overflow: hidden;
+    position: relative;
+}
+
+.avatar-current img {
+    position: absolute;
+}

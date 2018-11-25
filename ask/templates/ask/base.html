@@ -1,0 +1,82 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>AskApakhov - {% block title %}Base{% endblock %}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% block links %}{% endblock %}
+        <link rel="stylesheet" href="{% static 'ask/base.css' %}" type="text/css">
+        <link href="http://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand fixed-top navbar-dark bg-dark">
+            <a class="navbar-brand" href="{% url 'ask:index'  %}">AskApakhov</a>
+            <div class="collapse navbar-collapse" id="navb">
+                <form class="navbar-form mx-auto w-50" action="/action_page.php">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-button" type="submit">
+                                <i class="fas fa-crosshairs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <a href="{% url 'ask:ask'  %}" class="btn btn-success" type="button">Ask!</a>
+                <ul class="nav navbar-nav ml-auto mr-3">
+                    {% if user.is_authenticated %}
+                        <li class="px-2">
+                            <div class="avatar-thumbnail">
+                                <img src="{% static 'ask/images/avatar_tn.jpg' %}">
+                            </div>
+                        </li>
+                        <li class="px-2">
+                            <div style="display: block;"><font color="orange">{{ user.username }}</font></div>
+                            <a href="{% url 'ask:settings' %}">settings</a>
+                            <a href="{% url 'logout' %}">logout</a>
+                        </li>
+                    {% else %}
+                        <li class="px-2 ml-2 mt-2"><a href="{% url 'ask:signup' %}"><i class="fas fa-user-plus"></i> Sign Up </a></li>
+                        <li class="px-2 ml-1 mt-2"><a href="{% url 'login' %}"><i class="fas fa-fingerprint "></i> Login </a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+        <main role="main" class="container main-container">
+            <div class="row">
+                <div class="col-md-9 blog-main">
+                    {% block main-content %}{% endblock %}
+                </div>
+                <!-- /.blog-main -->
+                <aside class="col-md-3 blog-sidebar">
+                    <div class="p-3 mb-3 bg-light rounded">
+                        <h4 class="mb-3">Popular Tags</h4>
+                        <div id="tag-cloud" class="md-0">
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="mb-3">Best Members</h4>
+                        <ol class="list-unstyled mb-1">
+                            <li class="mb-1"><a href="#"><u>Mr. Freeman</u></a></li>
+                            <li class="mb-1"><a href="#"><u>Dr.House</u></a></li>
+                            <li class="mb-1"><a href="#"><u>Bender</u></a></li>
+                            <li class="mb-1"><a href="#"><u>Queen Victoria</u></a></li>
+                            <li class="mb-1"><a href="#"><u>V. Pupkin</u></a></li>
+                        </ol>
+                    </div>
+                </aside>
+                <!-- /.blog-sidebar -->
+            </div>
+            <!-- /.row -->
+        </main>
+        <script src="{% static 'ask/js/tags_gen.js' %}"></script>
+        {% block scripts %}{% endblock %}
+    </body>
+</html>

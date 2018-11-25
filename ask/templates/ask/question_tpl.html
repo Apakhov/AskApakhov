@@ -1,0 +1,32 @@
+{% load static %}
+<div class="card flex-md-row mb-4 box-shadow h-md-250">
+    <div class="card-body">
+        <div style="float: left;">
+            <div class="avatar-thumbnail mr-4 mb-2">
+                <img src="{{question.autor.upload.url}}">
+            </div>
+
+            <div class="input-group spinner" style="width: 37px">
+                <input type="text" class="form-control p-0" value="{{question.like_am}}" style="height: 34px">
+                <div class="input-group-btn-vertical">
+                    <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+                    <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="card-title mb-0"><a href="/question/{{question.id}}/">{{question.title}}</a></h5>
+            <p class="card-text">{{question.text}}</p>
+
+            <div>
+                <a href="#" class="card-link">answer({{question.answer_set.count}})</a>
+                <div style="float: right">
+                    <span>Tags: </span>
+                    {% for tag in question.tags.all %}
+                    <a href="/tag/{{tag}}">{{tag}}</a>
+
+                    {% endfor %}
+                </div>
+            </div>
+    </div>
+</div>

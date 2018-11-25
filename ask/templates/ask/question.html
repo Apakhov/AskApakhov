@@ -1,0 +1,99 @@
+{% extends "ask/base.html" %}
+{% load static %}
+
+{% block title %}New Question{% endblock %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static 'ask/questions.css' %}" type="text/css">{% endblock %}
+
+{% block main-content %}
+
+
+<form class="form-horizontal" action="/action_page.php">
+    <div class="card flex-md-row mb-6 h-md-300 ">
+        <div class="card-body">
+            <div style="float: left;">
+                <div class="avatar-current mr-4 mb-2">
+                    <img src="{{question.autor.upload.url}}">
+                </div>
+
+                <div class="input-group spinner" style="width: 87px">
+                    <input type="text" class="form-control p-0" value="{{question.like_am}}" style="height: 34px">
+                    <div class="input-group-btn-vertical">
+                        <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+                        <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="card-title mb-0"><a href="#">{{question.title}}</a></h5>
+                <p class="card-text">{{question.text}}</p>
+
+                <div>
+                    <div style="float: right">
+                        <span>Tags: </span>
+                        {% for tag in question.tags.all %}
+                        <a href="/tag/{{tag}}">{{tag}}</a>
+
+                        {% endfor %}
+                    </div>
+                    <div style="float: left">
+                        <span>By: {{question.autor}}</span>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <hr>
+    {% for answer in question.answer_set.all %}
+    <div class="card flex-md-row mb-4 box-shadow h-md-250">
+        <div class="card-body">
+            <div style="float: left;">
+                <div class="avatar-thumbnail mr-4 mb-2">
+                    <img src="{{answer.autor.upload.url}}">
+                </div>
+
+                <div class="input-group spinner" style="width: 37px">
+                    <input type="text" class="form-control p-0" value="{{answer.like_am}}" style="height: 34px">
+                    <div class="input-group-btn-vertical">
+                        <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+                        <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <p class="card-text">{{answer.text}}</p>
+            <div>
+                <div style="float: left">
+                    <span>By: {{answer.autor}}</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+    <hr>
+
+
+    {% if user.is_authenticated %}
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="question">Enter:</label>
+        <div class="col-sm-12">
+            <textarea class="form-control" id="question" placeholder="Enter your answer"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">Answer</button>
+        </div>
+    </div>
+    {% else %}
+    <li class="px-2 ml-1 mt-2"><a href="{% url 'login' %}">Please login to answer</a></li>
+    {% endif %}
+
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'ask/js/spinner.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "ask/base.html" %}
+{% load static %}
+
+{% block title %}Index{% endblock %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static 'ask/index.css' %}" type="text/css">{% endblock %}
+
+{% block main-content %}
+<a href="/" class="main-header">New Questions</a>
+
+<h3 class="pb-3 mb-3 mr-2 main-header">
+    Hot Questions
+</h3>
+
+
+
+
+{% for question in questions %}
+{% include "ask/question_tpl.html" with question=question%}
+{% endfor %}
+
+
+
+
+{% include "ask/paginator.html" with page=questions indexed=indexed %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'ask/js/spinner.js' %}"></script>
+{% endblock %}
