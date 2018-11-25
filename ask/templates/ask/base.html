@@ -34,7 +34,7 @@
                     {% if user.is_authenticated %}
                         <li class="px-2">
                             <div class="avatar-thumbnail">
-                                <img src="{% static 'ask/images/avatar_tn.jpg' %}">
+                                <img src="{{user.upload.url}}">
                             </div>
                         </li>
                         <li class="px-2">

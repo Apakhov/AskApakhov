@@ -10,7 +10,7 @@
 <h3 class="pb-3 mb-3 mr-2 main-header">
     New Question
 </h3>
-<form class="basic-form">
+{% comment %} <form class="basic-form">
     {% csrf_token %}
     {{ form.as_p }}
     <div class="form-group row mt-5">
@@ -18,31 +18,41 @@
             <button type="submit" class="btn btn-default">Ask!</button>
         </div>
     </div>
-</form>
+</form> {% endcomment %}
 
-<form class="form-horizontal" action="/action_page.php">
+{{ form.non_field_errors }}
+<form class="form-horizontal" action="" method="post">
+    {% csrf_token %}
     <div class="form-group">
-        <label class="control-label col-sm-2" for="title">Title:</label>
+        <label class="control-label col-sm-2" for="{{ form.title.id_for_label }}">Title:</label>
+        {{ form.title.errors }}
         <div class="col-sm-10">
-            <input type="" class="form-control" id="title" placeholder="Why are we stil here? Just to suffer?">
+            {{form.title}}
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="question">Question:</label>
+        <label class="control-label col-sm-2" for="{{ form.text.id_for_label }}">Question:</label>
+        {{ form.text.errors }}
         <div class="col-sm-10">
-            <textarea class="form-control" id="question" placeholder="Every night, I can feel my leg… and my arm… even my fingers. The body I’ve lost… the comrades I’ve lost… won’t stop hurting… It’s like they’re all still there. You feel it, too, don’t you?"></textarea>
+            {{form.text}}
         </div>
     </div>
     <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <label for="tags">Tags </label>
-            <input class="form-control" id="tags" placeholder="War, Never, Change" type="text">
+        <label class="control-label col-sm-2" for="{{ form.tags.id_for_label }}">Tags:</label>
+        {{ form.tags.errors }}
+        <div class="col-sm-10">
+            {{form.tags}}
         </div>
     </div>
+    {% if user.is_authenticated %}
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-default">Ask!</button>
         </div>
     </div>
+    {% else %}
+    <li class="px-2 ml-1 mt-2"><a href="{% url 'login' %}">Please login to answer</a></li>
+    {% endif %}
+
 </form>
 {% endblock %}

@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
+from django.contrib.auth import authenticate, login
 from ask.models import Profile, Question, Tag, Answer, Like
-from ask.forms import QuestionForm
+from ask.forms import QuestionForm, ProfileForm
  
 
 def pag(items, items_on_page, page_am, request, num):
@@ -52,10 +53,44 @@ def hot(request, page_num=-1):
     return render(request, 'ask/hot.html', {'questions' : page, 'paginator': paginator, 'indexed':indexed})    
 
 def ask(request):
-    return render(request, 'ask/question_form.html', {'form': QuestionForm()})
+    if request.method == 'POST':
+        print("POST")
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect('/login')
+        
+        form=QuestionForm(request.POST)
+        if form.is_valid():
+            autor = Profile.objects.get_by_natural_key(request.user.username)
+            title = form.cleaned_data['title']
+            text = form.cleaned_data['text']
+            q = Question.objects.create(autor=autor, title=title, text=text)
+            for tag in form.cleaned_data['tags']:
+                q.tags.add(Tag.objects.get_or_create(title=tag)[0])
+            q.save()
+            return HttpResponseRedirect('/question/'+str(q.id))
+    else:
+        form=QuestionForm()    
+    return render(request, 'ask/question_form.html', {'form': form})
 
 def signup(request):
-    return render(request, 'registration/signup.html')
+    if request.method == 'POST':
+        
+        if request.user.is_authenticated:
+            return HttpResponseRedirect('/')
+        
+        form=ProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            print('VALID')
+            form.save()
+            #messages.info(request, "Thanks for registering. You are now logged in.")
+            new_user = authenticate(username=form.cleaned_data['username'],
+                                    password=form.cleaned_data['password'],
+                                    )
+            login(request, new_user)
+            return HttpResponseRedirect('/login')
+    else:
+        form=ProfileForm() 
+    return render(request, 'registration/signup.html', {'form': form})
 
 def question(request, question_num):
     q = Question.objects.get(id=question_num)

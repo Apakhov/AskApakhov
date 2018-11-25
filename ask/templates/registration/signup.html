@@ -8,52 +8,59 @@
 
 {% block main-content %}
 <h3 class="pb-3 mb-3 mr-2 main-header">
-    Registration
+    Registration {{ form.upload.errors }}
 </h3>
 
-<form class="form-horizontal" action="/action_page.php">
+<form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
     <div class="form-group">
-        <label class="control-label col-sm-2" for="login">Login:</label>
+        <label class="control-label col-sm-2" for="{{ form.first_name.id_for_label }}">Login:</label>
+        {{ form.first_name.errors }}
         <div class="col-sm-10">
-            <input type="" class="form-control" id="login" placeholder="dr. pepper">
+            {{form.first_name}}
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="email">Email:</label>
+        <label class="control-label col-sm-2" for="{{ form.email.id_for_label }}">Email:</label>
+        {{ form.email.errors }}
         <div class="col-sm-10">
-            <input type="email" class="form-control" id="email" placeholder="pepper@mail.ru">
+            {{form.email}}
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="nickname">Nickname:</label>
+        <label class="control-label col-sm-2" for="{{ form.username.id_for_label }}">Nickname:</label>
+        {{ form.username.errors }}
         <div class="col-sm-10">
-            <input type="" class="form-control" id="nickname" placeholder="hate_cola">
+            {{form.username}}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="{{ form.password.id_for_label }}">Password:</label>
+        {{ form.password.errors }}
+        <div class="col-sm-10">
+            {{form.password}}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="{{ form.repeat_password.id_for_label }}">Repeat password:</label>
+        {{ form.repeat_password.errors }}
+        <div class="col-sm-10">
+            {{form.repeat_password}}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="{{ form.upload.id_for_label }}">Upload:</label>
+        {{ form.upload.errors }}
+        <div class="col-sm-10">
+            {{form.upload}}
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="password">Password:</label>
-        <div class="col-sm-10">
-            <input type="password" class="form-control" id="password" placeholder="">
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="rep_password">Repeat Password:</label>
-        <div class="col-sm-10">
-            <input type="password" class="form-control" id="rep_password" placeholder="">
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="avatar">Select Avatar:</label>
-        <div class="col-sm-10">
-                <input type="file" name="avatar" id="fileToUpload">
-        </div>
-    </div>
-    
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-default">Register!</button>
         </div>
     </div>
 </form>
+
 {% endblock %}

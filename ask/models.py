@@ -3,9 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ObjectDoesNotExist
 
 
-
 class Profile(AbstractUser):
-    upload = models.ImageField(upload_to='%Y/%m/%d/')
+    upload = models.ImageField(upload_to='%Y/%m/%d/', default='index.png')
 
 class Tag(models.Model):
     title = models.CharField(max_length=120, verbose_name=u"заголовок ярлыка")
@@ -35,7 +34,7 @@ class Question(models.Model):
     text = models.CharField(max_length=10000, verbose_name=u"full text", default="i've got a problem")
     create_time = models.TimeField(auto_now_add=True)
     like_am = models.IntegerField(default=0,verbose_name=u"количество Лукашенко")
-
+    is_active = models.BooleanField(default=True, verbose_name=u"можно ли достать")
     def __str__(self):
         return self.title
 
@@ -48,6 +47,7 @@ class Answer(models.Model):
         on_delete=models.CASCADE
     )
     like_am = models.IntegerField(default=0,verbose_name=u"количество Лукашенко")
+    is_active = models.BooleanField(default=True, verbose_name=u"можно ли достать")
     def __str__(self):
         return self.text[:100]  
 
@@ -59,7 +59,9 @@ class Like(models.Model):
 
     question = models.ForeignKey(
         Question,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=True,
+        default=None
     )  
 
     answer = models.ForeignKey(
